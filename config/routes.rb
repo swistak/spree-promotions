@@ -1,3 +1,4 @@
 map.namespace :admin do |admin|
-   admin.resources :promotions
+   admin.resources :product_promotions
+   admin.resources :user_promotions
  end

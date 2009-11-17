@@ -13,9 +13,18 @@ class CreatePromotions < ActiveRecord::Migration
       t.timestamps
     end
 
+    create_table :promotions_users, :id => false do |t|
+      t.column :user_id,      :integer
+      t.column :promotion_id, :integer
+    end
+
     add_index :promotions, [:promoted_id, :promoted_type]
+    add_index :promotions, [:promoted_type, :promoted_id]
     add_index :promotions, :name
     add_index :promotions, :zone_id
+
+    add_index :promotions_users, :user_id
+    add_index :promotions_users, :promotion_id
   end
 
   def self.down

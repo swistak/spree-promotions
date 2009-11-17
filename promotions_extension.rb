@@ -18,15 +18,23 @@ class PromotionsExtension < Spree::Extension
     FileUtils.cp Dir.glob(File.join(base, "public/stylesheets/*.css")), File.join(RAILS_ROOT, "public/stylesheets/")
     FileUtils.cp Dir.glob(File.join(base, "public/javascripts/*.js")), File.join(RAILS_ROOT, "public/javascripts")
 
-    if Promotion.table_exists?
-      Calculator::FreeShipping.register(Promotion)
+    if ProductPromotion.table_exists?
+      Calculator::FreeShipping.register(ProductPromotion)
+      UserPromotion.register_calculator(Calculator::FlatPercentItemTotal)
       PromotionOrderObserver.instance
     end
 
-    PromotionCredit
+    ::PromotionCredit
 
     Order.class_eval do
       has_many :promotion_credits, :conditions => {:type => "PromotionCredit"}
+    end
+
+    Admin::UsersController.class_eval do
+      before_filter :users_submenu
+      def users_submenu
+        render_to_string :partial => 'admin/shared/user_sub_menu'
+      end
     end
 
     # Add your extension tab to the admin.
