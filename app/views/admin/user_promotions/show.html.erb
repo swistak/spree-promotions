@@ -10,13 +10,6 @@
   <%= t(:to)  + " " +  @promotion.end_at.to_s(:short_date) if @promotion.end_at %>
 </p>
 <p>
-  <%= Promotion.human_attribute_name(:zone) %>: <%= @promotion.zone.name %>
-</p>
-<p>
-  <%= Promotion.human_attribute_name(:promoted) %>:
-  <%= link_to_promoted(@promotion.promoted) %>
-</p>
-<p>
-  <%= Promotion.human_attribute_name(:description) %>:<br />
-  <%= @promotion.description %>
+  <%= Promotion.human_attribute_name(:promoted) %>:<br />
+  <%= @promotion.users.count+" "+t(:users) %>
 </p>

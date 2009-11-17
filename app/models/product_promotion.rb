@@ -24,7 +24,7 @@
 # Calculators for a promotions have promotion_credit passed to it as argument, which allow for access to both promotion
 # (as adjustment_source) and order.
 
-class Promotion < ActiveRecord::Base
+class ProductPromotion < ActiveRecord::Base
   PROMOTED_TYPES = ["Product", "ProductGroup", "Taxon"]
 
   has_calculator :default => Calculator::FreeShipping
