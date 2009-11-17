@@ -1,0 +1,10 @@
+<% content_for :sub_menu do %>
+  <ul id="sub_nav">
+    <%= tab :products, :match_path => '/products' %>
+    <%= tab :option_types, :match_path => '/option_types' %>
+    <%= tab :properties %>
+    <%= tab :prototypes %>
+    <%= tab :product_groups, :match_path => '/product_groups' %>
+    <%= tab :promotions, :match_path => '/promotions', :css_class => 'last' %>
+  </ul>
+<% end %>
