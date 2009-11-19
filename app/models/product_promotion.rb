@@ -1,3 +1,16 @@
+# ProductPromtion is type of promotion that applies to products.
+#
+# Requirements for applying promotion:
+# * Shipping address has to belong to a zone associated with promotion
+# * promotion must be active (see .active scope)
+# * order must have at least one product that is promoted.
+#
+# h3. Promoted types
+#
+# Promotion can handle any type of object that groups products, promoted model have to provide following methods:
+# #name, #products, #human_name (for translation) and #all - that returns list of all objects that can be selected
+# When adding promoted type you should also update helper that privdes #link_to_promoted method.
+#
 class ProductPromotion < Promotion
   PROMOTED_TYPES = ["Product", "ProductGroup", "Taxon"]
 

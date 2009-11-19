@@ -1,4 +1,4 @@
-# *Promotion" is a class for managing promotions, on sets of products.
+# *Promotion" is a class for managing promotions.
 #
 # h3. Basic usage
 #
@@ -8,28 +8,16 @@
 # All promotion related calculations should be carried out in special calculator, having different calculators,
 # allows for different kinds of promotions.
 #
-# Requirements for applying promotion:
-# * Shipping address has to belong to a zone associated with promotion
-# * promotion must be active (see .active scope)
-# * order must have at least one product that is promoted.
+# Calculators for a promotions have promotion_credit passed to it as argument,
+# which allow for access to both promotion(as adjustment_source) and order.
 #
-# h3. Promoted types
-#
-# Promotion can handle any type of object that groups products, promoted model have to provide following methods:
-# #name, #products, #human_name (for translation) and #all - that returns list of all objects that can be selected
-# When adding promoted type you should also update helper that privdes #link_to_promoted method.
-#
-# h3. Calculators
-#
-# Calculators for a promotions have promotion_credit passed to it as argument, which allow for access to both promotion
-# (as adjustment_source) and order.
 class Promotion < ActiveRecord::Base
-  has_many :promotion_credits, :as => :adjustment_source, :dependent => :nullify
+  has_many :credits, :as => :adjustment_source, :dependent => :nullify
   has_calculator
   belongs_to :zone
   belongs_to :promoted, :polymorphic => true
   has_and_belongs_to_many :users
-  
+
   named_scope :active, {:conditions => [
       "(
          promotions.start_at IS NULL OR promotions.start_at <= ?
@@ -51,19 +39,20 @@ class Promotion < ActiveRecord::Base
     return(eligible)
   end
 
-  # Checks if promotion can be combined with other promotions already in order.
+  # Checks if discount can be combined with other that are already in order.
   # returns true if any of the following is true:
   #  * promotion is combinable,
   #  * there are no other promotions,
   #  * all other promotions are combinable
   def can_combine?(order)
-    self.combine ||
-      order.promotion_credits.empty? ||
-      order.promotion_credits(:join => :adjustment_source).
-        all?{|pc| pc.adjustment_source.combine}
+    self.combine && (
+      order.credits.empty? ||
+      order.credits(:join => :adjustment_source).
+      all?{|pc| pc.adjustment_source.combine}
+    )
   end
 
-  # Checks f promotion can be added to the order.
+  # Checks if promotion can be added to the order.
   # returns true if
   #  * order is eligible for promotion
   #  * promotion can be combined with other promotions on order
@@ -71,7 +60,7 @@ class Promotion < ActiveRecord::Base
   def can_be_added?(order)
     eligible?(order) &&
       can_combine?(order) &&
-      PromotionCredit.count(:conditions => {
+      Credit.count(:conditions => {
         :adjustment_source_id => self.id,
         :adjustment_source_type => self.class.name,
         :order_id => order.id
@@ -83,7 +72,7 @@ class Promotion < ActiveRecord::Base
   # *WARNING*: this method does not check if credit can be created,
   # use #can_be_added? to check it first
   def create_credit(order)
-    credit = order.promotion_credits.create({
+    credit = order.credits.create({
         :adjustment_source => self,
         :description => I18n.t(name)
       })

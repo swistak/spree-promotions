@@ -1,4 +1,4 @@
-class UserPromotion < Promotion
+class UserPromotion < AbstractPromotion
   # Checks if order is eligible for promotion.
   def eligible?(order)
     eligible = true

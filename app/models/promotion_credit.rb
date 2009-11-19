@@ -10,4 +10,8 @@ class PromotionCredit < Credit
       calc.compute(self) if calc
     end
   end
+
+  def before_save
+    self.amount = order.item_total if self.amount > order.item_total
+  end
 end

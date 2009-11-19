@@ -4,6 +4,6 @@ class PromotionOrderObserver < ActiveRecord::Observer
   def before_save(order)
     Promotion.active.each do |promotion|
       promotion.create_credit(order) if promotion.can_be_added?(order)
-    end
+    end if changed?
   end
 end
