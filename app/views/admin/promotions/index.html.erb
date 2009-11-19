@@ -1,0 +1,29 @@
+<div class='toolbar'>
+  <ul class='actions'>
+    <li>
+      <%= button_link_to t("new_product_promotion"),  new_admin_product_promotion_url,  :icon => 'add' %>
+      <%= button_link_to t("new_user_promotion"),     new_admin_user_promotion_url,     :icon => 'add' %>
+      <%= button_link_to t("new_coupon"),     new_admin_coupon_url,     :icon => 'add' %>
+    </li>
+  </ul>
+  <br class='clear' />
+</div>
+
+<h1><%= t("listing", :scope => :actions) %> <%= Promotion.human_name %></h1>
+
+<table class="index">
+  <thead>
+    <tr>
+      <th><%= t("type") %></th>
+      <th><%= t("count") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @promotion_count.each_pair do |type, count| %>
+      <tr>
+        <td><%= type %></td>
+        <td><%= count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

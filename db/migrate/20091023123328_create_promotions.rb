@@ -9,6 +9,7 @@ class CreatePromotions < ActiveRecord::Migration
       t.column :promoted_id, :integer
       t.column :promoted_type, :string
       t.column :combine, :boolean
+      t.column :type, :string
       
       t.timestamps
     end

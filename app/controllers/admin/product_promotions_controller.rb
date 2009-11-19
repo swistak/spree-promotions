@@ -1,10 +1,9 @@
 class Admin::ProductPromotionsController < Admin::BaseController
   resource_controller
-  before_filter :products_submenu
   before_filter :load_data
 
   def collection
-    @search = ProductPromotion.search(params[:search])
+    @search = ProductPromotion.active.search(params[:search])
 
     @promotions = @collection = @search.paginate(
       :per_page => Spree::Config[:per_page],
@@ -23,7 +22,8 @@ class Admin::ProductPromotionsController < Admin::BaseController
   end
 
   private
-  def products_submenu
-    render_to_string :partial => 'admin/shared/product_sub_menu'
+  before_filter :promotions_submenu
+  def promotions_submenu
+    render_to_string :partial => 'admin/shared/promotions_sub_menu'
   end
 end

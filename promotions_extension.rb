@@ -30,28 +30,28 @@ class PromotionsExtension < Spree::Extension
       has_many :promotion_credits, :conditions => {:type => "PromotionCredit"}
     end
 
-    Admin::UsersController.class_eval do
-      before_filter :users_submenu
-      def users_submenu
-        render_to_string :partial => 'admin/shared/user_sub_menu'
-      end
-    end
-
     # Add your extension tab to the admin.
     # Requires that you have defined an admin controller:
     # app/controllers/admin/yourextension_controller
     # and that you mapped your admin in config/routes
 
-    #Admin::BaseController.class_eval do
-    #  before_filter :add_yourextension_tab
-    #
-    #  def add_yourextension_tab
-    #    # add_extension_admin_tab takes an array containing the same arguments expected
-    #    # by the tab helper method:
-    #    #   [ :extension_name, { :label => "Your Extension", :route => "/some/non/standard/route" } ]
-    #    add_extension_admin_tab [ :yourextension ]
-    #  end
-    #end
+    Admin::BaseController.class_eval do
+      before_filter :add_promotions_tab
+    
+      def add_promotions_tab
+        # add_extension_admin_tab takes an array containing the same arguments expected
+        # by the tab helper method:
+        #   [ :extension_name, { :label => "Your Extension", :route => "/some/non/standard/route" } ]
+        add_extension_admin_tab [:promotions, :product_promotions, :user_promotions, :coupons]
+      end
+    end
+
+    Admin::CouponsController.class_eval do
+      before_filter :promotions_submenu
+      def promotions_submenu
+        render_to_string :partial => 'admin/shared/promotions_sub_menu'
+      end
+    end
 
     # make your helper avaliable in all views
     # Spree::BaseController.class_eval do
