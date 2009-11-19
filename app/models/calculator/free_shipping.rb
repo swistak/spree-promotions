@@ -3,9 +3,6 @@ class Calculator::FreeShipping < Calculator
     I18n.t("free_shipping")
   end
 
-  preference :test_preference, :boolean
-  preference :foo, :decimal
-
   # Computes the credit adjustment for orders with free shipping promotions
   #
   # It multiplies all shipping charges by percentage of all items having this promotion in order,

@@ -1,5 +1,8 @@
 class Admin::UserPromotionsController < Admin::BaseController
   resource_controller
+
+  before_filter :load_data
+
   def collection
     @search = UserPromotion.active.search(params[:search])
 
@@ -7,6 +10,11 @@ class Admin::UserPromotionsController < Admin::BaseController
       :per_page => Spree::Config[:per_page],
       :page     => params[:page]
     )
+  end
+
+  def load_data
+    @available_zones = Zone.find :all, :order => :name
+    @calculators = UserPromotion.calculators
   end
 
   private

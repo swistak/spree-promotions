@@ -6,8 +6,9 @@ class UserPromotion < Promotion
     eligible = true
     eligible &&= Time.now >= start_at if start_at
     eligible &&= Time.now <= end_at if end_at
-    eligible &&= order.user
-    eligible &&= self.users.include?(order.user)
+    eligible &&= user = order.user
+    eligible &&= self.users.include?(user)
+    eligible &&= self.usage_limit > PromotionCredit.count_used(user.id, self.id)
     
     return(eligible)
   end

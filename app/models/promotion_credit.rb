@@ -1,4 +1,14 @@
 class PromotionCredit < Credit
+  # Counts used promotion credits for given user and promotion ids.
+  def self.count_used(user_id, adjustment_source_id)
+    count(
+      :joins => :order,
+      :conditions => {
+        'orders.user_id' => user_id,
+        :adjustment_source_id => adjustment_source_id
+      })
+  end
+
   def applicable?
     adjustment_source && adjustment_source.eligible?(order) && super
   end
