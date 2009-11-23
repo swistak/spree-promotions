@@ -53,6 +53,10 @@ class PromotionsExtension < Spree::Extension
       end
     end
 
+    def Calculator.description
+      I18n.t(self.name.split("::").map(&:underscore).join("."))
+    end
+
     # make your helper avaliable in all views
     # Spree::BaseController.class_eval do
     #   helper YourHelper

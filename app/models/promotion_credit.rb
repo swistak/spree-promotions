@@ -24,4 +24,8 @@ class PromotionCredit < Credit
   def before_save
     self.amount = order.item_total if self.amount > order.item_total
   end
+
+  def before_destroy
+    
+  end
 end

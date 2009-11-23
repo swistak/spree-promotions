@@ -1,16 +1,16 @@
 class CreatePromotions < ActiveRecord::Migration
   def self.up
     create_table :promotions do |t|
-      t.column :name,         :string
-      t.column :description,  :text
-      t.column :start_at,     :timestamp
-      t.column :end_at,       :timestamp
-      t.column :zone_id,      :integer
-      t.column :promoted_id,  :integer
+      t.column :name,          :string
+      t.column :description,   :text
+      t.column :start_at,      :timestamp
+      t.column :end_at,        :timestamp
+      t.column :zone_id,       :integer
+      t.column :promoted_id,   :integer
       t.column :promoted_type, :string
-      t.column :combine,      :boolean
-      t.column :usage_limit,  :integer
-      t.column :type,         :string
+      t.column :combine,       :boolean
+      t.column :usage_limit,   :integer
+      t.column :type,          :string
       
       t.timestamps
     end

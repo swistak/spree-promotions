@@ -1,6 +1,6 @@
-class FirstPurchasePromotion < ProductPromotion
+class ProductFreePromotion < ProductPromotion
   # Checks if order is eligible for promotion.
   def eligible?(order)
-    super && (user.orders.checkout_complete.count == 0)
+    super && order.user && (order.user.orders.checkout_complete.count == 0)
   end
 end
