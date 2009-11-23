@@ -1,13 +1,9 @@
 <div class='toolbar'>
   <ul class='actions'>
     <li>
-      <%#= button_link_to t("new_product_promotion"),  new_admin_product_promotion_url,  :icon => 'add' %>
-      <%#= button_link_to t("new_user_promotion"),     new_admin_user_promotion_url,     :icon => 'add' %>
-      <%#= button_link_to t("new_first_order_promotion"),
-                         new_admin_first_purchase_promotion_url,
-                         :icon => 'add' %>
-      <%#= button_link_to t("new_coupon"),     new_admin_coupon_url,     :icon => 'add' %>
-
+      <%= button_link_to t("new_product_promotion"),  new_admin_product_promotion_url,  :icon => 'add' %>
+      <%= button_link_to t("new_user_promotion"),     new_admin_user_promotion_url,     :icon => 'add' %>
+      <%= button_link_to t("new_coupon"),     new_admin_coupon_url,     :icon => 'add' %>
     </li>
   </ul>
   <br class='clear' />
@@ -30,7 +26,7 @@
   <tbody>
   <% @promotions.each do |promo| %>
     <tr>
-      <td><%= link_to promo.name, object_path(promo) %></td>
+      <td><%= link_to promo.name, object_path(promo) %> (<%= promo.class.human_name %>)</td>
       <td><%= promo.promoted && link_to_promoted(promo.promoted) %></td>
       <td><%= promo.zone && promo.zone.name %></td>
       <td><%= promo.start_at %></td>

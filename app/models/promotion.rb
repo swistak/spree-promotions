@@ -12,13 +12,6 @@
 # which allow for access to both promotion(as adjustment_source) and order.
 #
 class Promotion < ActiveRecord::Base
-  PROMOTIONS = [
-    "GroupPromotion",
-    "ProductPromotion",
-    "FirstPurchasePromotion",
-    "UserPromotion"
-  ]
-
   has_many :credits, :as => :adjustment_source, :dependent => :nullify
   has_calculator
   belongs_to :zone
@@ -51,11 +44,8 @@ class Promotion < ActiveRecord::Base
   #  * there are no other promotions,
   #  * all other promotions are combinable
   def can_combine?(order)
-    self.combine && (
-      order.credits.empty? ||
-        order.credits(:join => :adjustment_source).
-        all?{|pc| pc.adjustment_source.combine}
-    )
+    self.combine &&
+      order.credits(:join => :adjustment_source).all?{|pc| pc.adjustment_source.combine}
   end
 
   # Checks if promotion can be added to the order.
@@ -65,7 +55,7 @@ class Promotion < ActiveRecord::Base
   #  * this promotion is alredy not used
   def can_be_added?(order)
     eligible?(order) &&
-      can_combine?(order) &&
+      (can_combine?(order) || order.promotion_credits.empty?) &&
       Credit.count(:conditions => {
         :adjustment_source_id => self.id,
         :adjustment_source_type => self.class.name,
@@ -78,7 +68,7 @@ class Promotion < ActiveRecord::Base
   # *WARNING*: this method does not check if credit can be created,
   # use #can_be_added? to check it first
   def create_credit(order)
-    credit = order.credits.create({
+    credit = order.promotion_credits.build({
         :adjustment_source => self,
         :description => I18n.t(name)
       })

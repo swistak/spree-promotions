@@ -1,6 +1,7 @@
 class Admin::ProductPromotionsController < Admin::BaseController
   resource_controller
   before_filter :load_data
+  helper 'admin/promotions'
 
   def collection
     @search = ProductPromotion.active.search(params[:search])
@@ -14,6 +15,8 @@ class Admin::ProductPromotionsController < Admin::BaseController
   def load_data
     @available_zones = Zone.find :all, :order => :name
     @calculators = ProductPromotion.calculators
+    @promoted_types = ProductPromotion::PROMOTED_TYPES.map(&:constantize)
+    @promotion_types = ProductPromotion::PROMOTION_TYPES.map(&:constantize)
   end
 
   def auto_complete_for_promotion_promoted_name
@@ -30,11 +33,24 @@ class Admin::ProductPromotionsController < Admin::BaseController
     render :inline => "<%= auto_complete_result @items, 'name' %>"
   end
 
+  create.success.after do
+    logger.debug("okej (niby)")
+  end
+
+  create.failure.after do
+    logger.debug(@object.errors.inspect)
+  end
+
   private
+  def object
+    @promotion ||= super
+  end
+
   def build_object
-    promotion_type = (params[:type] || "ProductPromotion").camelize
-    promotion_type = "ProductPromotion" unless Promotion::PROMOTIONS.include?(promotion_type)
-    @object ||= promotion_type.constantize.new(object_params)
+    promotion_type = params[:promotion] ? params[:promotion][:type] : params[:type]
+    promotion_type = (promotion_type || "ProductPromotion").camelize
+    promotion_type = "ProductPromotion" unless ProductPromotion::PROMOTION_TYPES.include?(promotion_type)
+    @promotion = @object ||= promotion_type.constantize.new(params[:promotion])
   end
 
 

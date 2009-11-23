@@ -16,5 +16,20 @@ en-US:
       promotion:
         one: Promotion
         other: Promotions
+      product_promotion:
+        one: Promotion on products
+        other: Promotions on products
+      group_promotion:
+        one: Promotion on groups of products
+        other: Promotions on groups of products
+      first_purchase_promotion:
+        one: Promotion for first time buyers
+        other: Promotions for first time buyers
   promotions: Promotions
   new_promotion: New promotion
+  new_product_promotion: New product promotion
+  new_user_promotion: New user promotion
+  user promotions: User promotions
+  product promotions: Product promotions
+  summary: Promotions summary
+  count: Count

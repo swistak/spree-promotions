@@ -6,6 +6,12 @@
       <%= f.error_message_on :name %>
     </td>
   </tr>
+  <% if @object.new_record? %>
+    <tr>
+      <td><%= Promotion.human_attribute_name("type") %>:</td>
+      <td><%= collection_select(:promotion, :type, @promotion_types, :name, :human_name, {}) %></td>
+    </tr>
+  <% end %>
   <tr>
     <td><%= Promotion.human_attribute_name("combine") %>:</td>
     <td><%= f.check_box :combine %></td>

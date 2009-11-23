@@ -13,6 +13,11 @@
 #
 class ProductPromotion < Promotion
   PROMOTED_TYPES = ["Product", "ProductGroup", "Taxon"]
+  PROMOTION_TYPES = [
+    "GroupPromotion",
+    "ProductPromotion",
+    "FirstPurchasePromotion",
+  ]
 
   # Checks if order is eligible for promotion.
   # if order has at least one item eligible for promotion method returns % of the order

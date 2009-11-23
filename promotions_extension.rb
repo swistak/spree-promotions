@@ -24,7 +24,10 @@ class PromotionsExtension < Spree::Extension
       PromotionOrderObserver.instance
     end
 
+    ::Adjustment
+    ::Credit
     ::PromotionCredit
+    ::ProductPromotion
 
     Order.class_eval do
       has_many :promotion_credits, :conditions => {:type => "PromotionCredit"}
@@ -56,6 +59,8 @@ class PromotionsExtension < Spree::Extension
     def Calculator.description
       I18n.t(self.name.split("::").map(&:underscore).join("."))
     end
+
+    Rails.cache.silence!
 
     # make your helper avaliable in all views
     # Spree::BaseController.class_eval do

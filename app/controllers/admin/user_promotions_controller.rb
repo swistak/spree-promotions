@@ -1,5 +1,6 @@
 class Admin::UserPromotionsController < Admin::BaseController
   resource_controller
+  helper 'admin/promotions'
 
   before_filter :load_data
 

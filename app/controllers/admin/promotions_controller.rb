@@ -1,4 +1,6 @@
 class Admin::PromotionsController < Admin::BaseController
+  helper 'admin/promotions'
+
   def index
     @search = Promotion.active.search(params[:search])
 

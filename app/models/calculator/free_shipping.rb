@@ -12,7 +12,7 @@ class Calculator::FreeShipping < Calculator
   def compute(promotion_credit)
     order = promotion_credit.order
     promotion = promotion_credit.adjustment_source
-    if eligibility = promotion.eligible?(order)
+    if (eligibility = promotion.eligible?(order)) && eligibility.is_a?(Integer)
       -1.0 * order.shipping_charges.map(&:amount).sum * eligibility
     end
   end
