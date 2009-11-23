@@ -69,7 +69,8 @@ class Promotion < ActiveRecord::Base
   # use #can_be_added? to check it first
   def create_credit(order)
     credit = order.promotion_credits.build({
-        :adjustment_source => self,
+        :adjustment_source_id => self.id,
+        :adjustment_source_type => self.class.name,
         :description => I18n.t(name)
       })
     credit

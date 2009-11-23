@@ -1,11 +1,8 @@
-$: << "../" 
+$: << "../"
 require 'test_helper'
-require 'db/seeds.rb'
 load File.join(File.dirname(__FILE__), "../factories/promotion.rb")
 
 class ProductPromotionTest < ActiveSupport::TestCase
-  #should_validate_uniqueness_of :name
-
   context "ProductPromotion" do
     setup do
       Promotion.delete_all
@@ -20,11 +17,21 @@ class ProductPromotionTest < ActiveSupport::TestCase
       end
       @t1.reload; @t2.reload;
 
+      # It's important to create order BEFORE promotions, since when order gets saved
+      # It'll automatically apply all available promotions
+      @order = Factory(:order)
+      @zone = Zone.global
+      @shipment = @order.shipment
+      @shipping_method = Factory(:shipping_method)
+      @order.shipment.shipping_method = @shipping_method
+      @order.shipment.address = Factory(:address)
+
       @promotion_product = Factory(:product_promotion, :promoted => @products.first, :combine => false)
       @promotion_taxon = Factory(:product_promotion, :promoted => @t1, :combine => true)
       @promotion_product2 = Factory(:product_promotion, :promoted => @products[1], :combine => false)
 
-      @order = Factory(:order)
+      Factory(:line_item, :variant => @products.first.master, :order => @order)
+      Factory(:line_item, :variant => @products[1].master, :order => @order)
     end
 
     [:promotion_product, :promotion_taxon, :promotion_product2].each do |promotion_name|
@@ -38,7 +45,7 @@ class ProductPromotionTest < ActiveSupport::TestCase
         end
 
         should "be eligible" do
-          assert(@promotion.eligible?(@order), "#{promotion_name} is not active")
+          assert(@promotion.eligible?(@order), "order is not eligible for #{promotion_name}")
         end
 
         should "include address in zone" do
@@ -56,28 +63,41 @@ class ProductPromotionTest < ActiveSupport::TestCase
     end
 
     should "allow promotion to be added when there's no previous charges" do
-      @order = Order.new
       assert @promotion_product.can_be_added?(@order)
       assert(@promotion_taxon.can_be_added?(@order))
       assert(@promotion_product2.can_be_added?(@order))
     end
 
-    should "not allow promotion to be added when all previous promotions are combinable" do
-      @promotion_taxon.create_credit(@order)
-      assert(!@promotion_product.can_combine?(@order))
-    end
+    context "with credit created" do
+      setup do
+        assert_equal(ProductPromotion, @promotion_taxon.class)
+        @promotion_taxon.create_credit(@order).save!
+      end
+      should_change("PromotionCredit.count") { PromotionCredit.count }
 
-    should "not allow promotion to be added when any of previous promotions are not combinable" do
-      @promotion_product.create_credit(@order)
-      assert(!@promotion_product2.can_combine?(@order))
-    end
+      should "create proper credit" do
+        assert_equal(1, PromotionCredit.count(:conditions => {
+              :adjustment_source_id => @promotion_taxon.id,
+              :adjustment_source_type => @promotion_taxon.class.name,
+              :order_id => @order.id
+            }))
+      end
 
-    should "not allow promotion to be added two times even if it's combinable" do
-      @promotion_taxon.create_credit(@order)
-      assert(!@promotion_taxon.can_be_added?(@order))
+      should "not allow promotion to be added when all previous promotions are combinable" do
+        assert(!@promotion_product.can_combine?(@order))
+      end
+
+      should "not allow promotion to be added when any of previous promotions are not combinable" do
+        assert(!@promotion_product2.can_combine?(@order))
+      end
+
+      should "not allow promotion to be added two times even if it's combinable" do
+        assert(!@promotion_taxon.can_be_added?(@order))
+      end
     end
 
     should "not be eligible for promotion when order is empty" do
+      @order = Order.new
       assert !@promotion_taxon.eligible?(@order)
     end
 

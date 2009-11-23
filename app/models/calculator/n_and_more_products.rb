@@ -9,7 +9,7 @@ class Calculator::NAndMoreProducts < Calculator
 
     credit = order.line_items(:join => :product).inject(0){|sum, line_item|
       if promotion.promoted_products.include?(line_item.product) &&
-          line_item.quantity.to_i > self.preferred_n_items.to_i
+          line_item.quantity.to_i >= self.preferred_n_items.to_i
         
         sum + 
           self.preferred_amount +
