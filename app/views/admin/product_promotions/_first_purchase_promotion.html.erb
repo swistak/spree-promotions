@@ -42,22 +42,29 @@
 <%= render "admin/shared/calculator_fields", :f => f %>
 
 <script type="text/javascript">
-  var ac_names = [];
-  <% @promoted_names.each_pair do |name, values| %>
-    ac_names["<%= name %>"] = <%= values.to_json %>;
-  <% end %>
-  
   $("#promotion_promoted_type").change(function(){
     $('#promotion_promoted_name').attr('value', '')
   })
-  $('#promotion_promoted_name').autocomplete_local({
-    data_source: function() {
-      return(ac_names[$("#promotion_promoted_type").attr('value')] || []);
-    }
+
+  update = $(document.createElement('div')).
+    attr('class', 'auto_complete').
+    attr('id', 'promotion_promoted_name_auto_complete').
+    attr('style', 'display:none');
+  $('#promotion_promoted_name').after(update);
+
+  jQuery('#promotion_promoted_name').autocomplete({
+    frequency: 1.5,
+    minChars: 3,
+    callback: function(element,entry){ 
+      var type = $("#promotion_promoted_type").attr('value')
+      return(entry + '&promoted_class=' + type)
+    },
+    update:'promotion_promoted_name_auto_complete',
+    url:'/admin/product_promotions/auto_complete_for_promotion_promoted_name'
   })
+  
 </script>
 
 <% content_for(:head) do %>
-  <%= javascript_include_tag('jrails.autocomplete.local.js') %>
   <%= stylesheet_link_tag('autocomplete') %>
 <% end %>

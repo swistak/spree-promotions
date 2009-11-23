@@ -14,11 +14,20 @@ class Admin::ProductPromotionsController < Admin::BaseController
   def load_data
     @available_zones = Zone.find :all, :order => :name
     @calculators = ProductPromotion.calculators
-    @promoted_types = ProductPromotion::PROMOTED_TYPES.map(&:constantize)
-    @promoted_names = {}
-    @promoted_types.each do |klass|
-      @promoted_names[klass.to_s] = klass.all(:select => 'name').map(&:name)
-    end
+  end
+
+  def auto_complete_for_promotion_promoted_name
+    find_options = {
+      :conditions => [ "LOWER(name) LIKE ?", '%' + params['promotion']['promoted_name'].downcase + '%' ],
+      :order => "name ASC",
+      :limit => 10
+    }
+
+    promoted_class = params['promoted_class']
+    promoted_class = 'Product' unless ProductPromotion::PROMOTED_TYPES.include?(promoted_class)
+    @items = promoted_class.constantize.find(:all, find_options)
+
+    render :inline => "<%= auto_complete_result @items, 'name' %>"
   end
 
   private
