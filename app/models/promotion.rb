@@ -12,6 +12,13 @@
 # which allow for access to both promotion(as adjustment_source) and order.
 #
 class Promotion < ActiveRecord::Base
+  PROMOTIONS = [
+    "GroupPromotion",
+    "ProductPromotion",
+    "FirstPurchasePromotion",
+    "UserPromotion"
+  ]
+
   has_many :credits, :as => :adjustment_source, :dependent => :nullify
   has_calculator
   belongs_to :zone
@@ -46,8 +53,8 @@ class Promotion < ActiveRecord::Base
   def can_combine?(order)
     self.combine && (
       order.credits.empty? ||
-      order.credits(:join => :adjustment_source).
-      all?{|pc| pc.adjustment_source.combine}
+        order.credits(:join => :adjustment_source).
+        all?{|pc| pc.adjustment_source.combine}
     )
   end
 

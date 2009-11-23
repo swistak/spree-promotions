@@ -17,11 +17,18 @@ class Admin::ProductPromotionsController < Admin::BaseController
     @promoted_types = ProductPromotion::PROMOTED_TYPES.map(&:constantize)
     @promoted_names = {}
     @promoted_types.each do |klass|
-      @promoted_names[klass.to_s] = klass.all.map(&:name)
+      @promoted_names[klass.to_s] = klass.all(:select => 'name').map(&:name)
     end
   end
 
   private
+  def build_object
+    promotion_type = (params[:type] || "ProductPromotion").camelize
+    promotion_type = "ProductPromotion" unless Promotion::PROMOTIONS.include?(promotion_type)
+    @object ||= promotion_type.constantize.new(object_params)
+  end
+
+
   before_filter :promotions_submenu
   def promotions_submenu
     render_to_string :partial => 'admin/shared/promotions_sub_menu'

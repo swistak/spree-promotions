@@ -1,0 +1,63 @@
+<table>
+  <tr>
+    <td><%= Promotion.human_attribute_name("name") %>:</td>
+    <td>
+      <%= f.text_field :name %>
+      <%= f.error_message_on :name %>
+    </td>
+  </tr>
+  <tr>
+    <td><%= Promotion.human_attribute_name("combine") %>:</td>
+    <td><%= f.check_box :combine %></td>
+  </tr>
+  <tr>
+    <td><%= Promotion.human_attribute_name("start_at") %>:</td>
+    <td><%= date_select :promotion, :start_at, :prompt => true, :use_month_numbers => true %></td>
+  </tr>
+  <tr>
+    <td><%= Promotion.human_attribute_name("end_at") %>:</td>
+    <td><%= date_select :promotion, :end_at, :prompt => true, :use_month_numbers => true %></td>
+  </tr>
+  <tr>
+    <td><%= Promotion.human_attribute_name("zone") %>:</td>
+    <td><%= collection_select(:promotion, :zone_id, @available_zones, :id, :name, {}) %></td>
+  </tr>
+  <tr>
+    <td><%= Promotion.human_attribute_name("promoted_type") %>:</td>
+    <td><%= collection_select(:promotion, :promoted_type, @promoted_types, :name, :human_name, {}) %></td>
+  </tr>
+  <tr>
+    <td><%= Promotion.human_attribute_name("promoted_name") %>:</td>
+    <td>
+      <%= f.text_field :promoted_name %>
+      <%= f.error_message_on :promoted_name %>
+    </td>
+  </tr>
+  <tr>
+    <td><%= Promotion.human_attribute_name("description") %>:</td>
+    <td><%= f.text_area :description %></td>
+  </tr>
+</table>
+
+<%= render "admin/shared/calculator_fields", :f => f %>
+
+<script type="text/javascript">
+  var ac_names = [];
+  <% @promoted_names.each_pair do |name, values| %>
+    ac_names["<%= name %>"] = <%= values.to_json %>;
+  <% end %>
+  
+  $("#promotion_promoted_type").change(function(){
+    $('#promotion_promoted_name').attr('value', '')
+  })
+  $('#promotion_promoted_name').autocomplete_local({
+    data_source: function() {
+      return(ac_names[$("#promotion_promoted_type").attr('value')] || []);
+    }
+  })
+</script>
+
+<% content_for(:head) do %>
+  <%= javascript_include_tag('jrails.autocomplete.local.js') %>
+  <%= stylesheet_link_tag('autocomplete') %>
+<% end %>
