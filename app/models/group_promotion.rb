@@ -10,7 +10,7 @@ class GroupPromotion < ProductPromotion
     # what percentage of products qualify for promotion?
     if eligible
       qpc = order.line_items(:join => :product).map(&:product) & promoted_products
-      eligible &&= (qpc.length == promoted_products.length)
+      eligible = (qpc.length == promoted_products.length) ? 1 : nil
     end
 
     return(eligible)

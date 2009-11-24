@@ -15,6 +15,7 @@ class Calculator::NoCharge < Calculator
     order = promotion_credit.order
     promotion = promotion_credit.adjustment_source
     if eligibility = promotion.eligible?(order)
+      eligibility = 1 unless eligibility.is_a?(::Numeric)
       charges = order.charges.all(:conditions => {:type => self.preferred_charge_type})
       -1.0 * charges.map(&:amount).sum * eligibility
     end
