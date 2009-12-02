@@ -14,6 +14,7 @@ require 'test_help'
 Dir[File.join(SPREE_ROOT, 'test/factories/*.rb')].each{|f| require(f)}
 require "authlogic/test_case"
 require 'shoulda'
+load File.join(File.dirname(__FILE__), "factories/promotion.rb")
 
 Zone.class_eval do
   def self.global
@@ -24,6 +25,13 @@ end
 class ActiveSupport::TestCase
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false
+end
+
+I18n.locale = "en-US"
+Spree::Config.set(:default_country_id => Country.first.id) if Country.first
+
+class ActionController::TestCase
+    setup :activate_authlogic
 end
 
 ActionController::TestCase.class_eval do

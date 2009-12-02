@@ -156,7 +156,8 @@ class PromotionsCalculatorsTest < ActiveSupport::TestCase
       assert(@promotion_taxon.eligible?(@order), "@order is not eligible for promotion")
       @order.save
 
-      assert_in_delta(@order.item_total * 0.01 + 1, -1 * @order.promotion_credits.first.amount, 0.01)
+      promoted_total = 10 * 1 + 4 * BigDecimal("10.99")
+      assert_in_delta(promoted_total * 0.01 + 1, -1 * @order.promotion_credits.first.amount.to_f, 0.01)
     end
   end
 end

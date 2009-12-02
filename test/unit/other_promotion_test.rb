@@ -1,6 +1,5 @@
 $: << "../"
 require 'test_helper'
-load File.join(File.dirname(__FILE__), "../factories/promotion.rb")
 
 class OtherPromotionTest < ActiveSupport::TestCase
   context "OtherPromotion" do
