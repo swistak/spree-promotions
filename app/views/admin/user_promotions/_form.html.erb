@@ -18,8 +18,10 @@
     <td><%= Promotion.human_attribute_name("end_at") %>:</td>
     <td><%= date_select :promotion, :end_at, :prompt => true, :use_month_numbers => true %></td>
   </tr>
-
-  
+  <tr>
+    <td><%= Promotion.human_attribute_name("zone") %>:</td>
+    <td><%= collection_select(:promotion, :zone_id, @available_zones, :id, :name, {}) %></td>
+  </tr>
   <tr>
     <td><%= Promotion.human_attribute_name("description") %>:</td>
     <td><%= f.text_area :description %></td>

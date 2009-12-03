@@ -17,6 +17,7 @@
     <th><%= Promotion.human_attribute_name("name") %></th>
     <th><%= Promotion.human_attribute_name("start_at") %></th>
     <th><%= Promotion.human_attribute_name("end_at") %></th>
+    <th><%= Promotion.human_attribute_name("zone") %></th>
     <th><%= Promotion.human_attribute_name("combine") %></th>
     <th><%= Promotion.human_attribute_name("promoted") %></th>
     <th><%= t(:action) %></th>
@@ -28,6 +29,7 @@
       <td><%= link_to promo.name, object_path(promo) %></td>
       <td><%= promo.start_at %></td>
       <td><%= promo.end_at %></td>
+      <td><%= promo.zone && promo.zone.name %></td>
       <td><%= promo.combine ? t(:yes) : t(:no) %></td>
       <td><%= promo.users.count+" "+t(:users) %></td>
       <td>

@@ -12,7 +12,16 @@ class CouponCredit < Credit
   def calculate_coupon_credit
     return 0 if order.line_items.empty?
     amount = adjustment_source.calculator.compute(order)
-    amount = order.item_total if amount > order.item_total
+    if promoted_products = adjustment_source.promoted_products
+      ceiling = order.
+        line_items(:join => :product).
+        select{|li| promoted_products.include?(li.product)}.
+        map(&:total).
+        sum
+    else
+      ceiling = order.item_total
+    end
+    amount = ceiling if amount > ceiling
     amount
   end
 

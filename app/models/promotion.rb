@@ -12,7 +12,7 @@
 # which allow for access to both promotion(as adjustment_source) and order.
 #
 class Promotion < ActiveRecord::Base
-  has_many :credits, :as => :adjustment_source, :dependent => :nullify
+  has_many :promotion_credits, :as => :adjustment_source, :dependent => :nullify
   has_calculator
   belongs_to :zone
   belongs_to :promoted, :polymorphic => true
@@ -28,6 +28,8 @@ class Promotion < ActiveRecord::Base
 
   validates_length_of :name, :minimum => 2
   validates_uniqueness_of :name
+
+  alias credits promotion_credits
 
   # Checks if order is eligible for promotion.
   def eligible?(order)

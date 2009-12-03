@@ -4,18 +4,35 @@
 # Several coupons can be associated with order, but only if all are combinable.
 #
 class Coupon < ActiveRecord::Base
+  belongs_to :zone
+  belongs_to :promoted, :polymorphic => true
   has_many  :coupon_credits,    :as => :adjustment_source
   has_calculator
   alias credits coupon_credits
 
   validates_presence_of :code
-  
+
   def eligible?(order)
-    return false if expires_at and Time.now > expires_at
-    return false if usage_limit and coupon_credits.count >= usage_limit
-    return false if starts_at and Time.now < starts_at
-    # TODO - also check items in the order (once we support product groups for coupons)
-    true
+    eligible = true
+    
+    eligible &&= Time.now < starts_at  if starts_at
+    eligible &&= Time.now > expires_at if expires_at
+    eligible &&= coupon_credits.count >= usage_limit if usage_limit
+    
+    # shipping address is in promotional zones?
+    if self.zone
+      eligible &&= order.shipment && order.ship_address
+      eligible &&= self.zone.include?(order.ship_address)
+    end
+
+    # is there at least one product that can be bought with coupon?
+    if eligible && !promoted_products.blank?
+      # check for eligibility only when coupon has promoted products
+      qpc = order.line_items(:join => :product).map(&:product) & promoted_products
+      eligible = qpc.length > 0
+    end
+
+    return(eligible)
   end
 
   # Checks if discount can be combined with other that are already in order.
@@ -26,8 +43,8 @@ class Coupon < ActiveRecord::Base
   def can_combine?(order)
     self.combine && (
       order.credits.empty? ||
-      order.credits(:join => :adjustment_source).
-      all?{|pc| pc.adjustment_source.combine}
+        order.credits(:join => :adjustment_source).
+        all?{|pc| pc.adjustment_source.combine}
     )
   end
 
