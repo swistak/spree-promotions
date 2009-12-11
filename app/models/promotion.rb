@@ -36,6 +36,7 @@ class Promotion < ActiveRecord::Base
     eligible = true
     eligible &&= Time.now >= start_at if start_at
     eligible &&= Time.now <= end_at if end_at
+    eligible &&= in_zone?(order)
 
     return(eligible)
   end
@@ -76,5 +77,16 @@ class Promotion < ActiveRecord::Base
         :description => I18n.t(name)
       })
     credit
+  end
+
+  # If zone is defined - checks if order has shipping address and address is in eligible zone.
+  # If not assumes promotion is global.
+  def in_zone?(order)
+    # shipping address is in promotional zones?
+    if self.zone
+      order.shipment && order.ship_address && self.zone.include?(order.ship_address)
+    else
+      true
+    end
   end
 end

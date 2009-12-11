@@ -3,12 +3,7 @@ class GroupPromotion < ProductPromotion
     eligible = true
     eligible &&= Time.now >= start_at if start_at
     eligible &&= Time.now <= end_at if end_at
-
-    # shipping address is in promotional zones?
-    if self.zone
-      eligible &&= order.shipment && order.ship_address
-      eligible &&= self.zone.include?(order.ship_address)
-    end
+    eligible &&= in_zone?(order)
     
     # what percentage of products qualify for promotion?
     if eligible

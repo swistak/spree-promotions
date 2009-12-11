@@ -9,11 +9,7 @@ class UserPromotion < Promotion
     eligible &&= user = order.user
     eligible &&= self.users.include?(user)
     eligible &&= self.usage_limit > PromotionCredit.count_used(user.id, self.id)
-    # shipping address is in promotional zones?
-    if self.zone
-      eligible &&= order.shipment && order.ship_address
-      eligible &&= self.zone.include?(order.ship_address)
-    end
+    eligible &&= in_zone?(order)
     return(eligible)
   end
 
