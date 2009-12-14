@@ -15,6 +15,7 @@ Dir[File.join(SPREE_ROOT, 'test/factories/*.rb')].each{|f| require(f)}
 require "authlogic/test_case"
 require 'shoulda'
 load File.join(File.dirname(__FILE__), "factories/promotion.rb")
+load File.join(File.dirname(__FILE__), "factories/coupon_factory.rb")
 
 Zone.class_eval do
   def self.global

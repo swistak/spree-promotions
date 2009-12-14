@@ -6,9 +6,11 @@
 class Coupon < ActiveRecord::Base
   belongs_to :zone
   belongs_to :promoted, :polymorphic => true
-  has_many  :coupon_credits,    :as => :adjustment_source
+  has_many   :coupon_credits,    :as => :adjustment_source
   has_calculator
   alias credits coupon_credits
+
+  include PromotedProducts
 
   validates_presence_of :code
 

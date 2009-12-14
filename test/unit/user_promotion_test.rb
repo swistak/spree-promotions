@@ -7,7 +7,6 @@ class UserPromotionTest < ActiveSupport::TestCase
       Promotion.delete_all
 
       @user = Factory(:user)
-      @another_user = Factory(:user)
       # It's important to create order BEFORE promotions, since when order gets saved
       # It'll automatically apply all available promotions
       @order = Factory(:order, :user => @user)
@@ -28,12 +27,12 @@ class UserPromotionTest < ActiveSupport::TestCase
         @order.save
       end
 
-      should "apply promotion for user" do
-        
-      end
-
-      should "not apply promotion for another user" do
-
+      should "create promotion credit for user" do
+        assert_equal(1, PromotionCredit.count(:conditions => {
+              :adjustment_source_id => @promotion_taxon.id,
+              :adjustment_source_type => @promotion_taxon.class.name,
+              :order_id => @order.id
+            }))
       end
     end
   end
