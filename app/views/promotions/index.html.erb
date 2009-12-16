@@ -1,0 +1,7 @@
+<h1><%= t("listing", :scope => :actions) %> <%= Promotion.human_name %></h1>
+
+<% @promotions.each do |promo| %>
+  <div class="promotion-details">
+    <%= render :partial => 'details', :locals => {:promo => promo} %>
+  </div>
+<% end %>

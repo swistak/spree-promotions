@@ -3,3 +3,5 @@ map.namespace :admin do |admin|
    admin.resources :user_promotions
    admin.resources :promotions, :only => [:index]
  end
+
+map.resources :promotions

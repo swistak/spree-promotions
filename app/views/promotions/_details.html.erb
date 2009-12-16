@@ -1,0 +1,29 @@
+<h2><%= promo.name %></h2>
+
+<dl>
+  <dt><%= t(:type, :scope => [:activerecord, :attributes, :promotion]) %></dt>
+  <dd><%= promo.type %></dd>
+
+  <dt><%= t(:promoted, :scope => [:activerecord, :attributes, :promotion]) %></dt>
+  <dd><%= promo.promoted && link_to_promoted(promo.promoted) %></dd>
+
+  <% if promo.zone %>
+    <dt><%= t(:zone, :scope => [:activerecord, :attributes, :promotion]) %></dt>
+    <dd><%= promo.zone && promo.zone.name %></dd>
+  <% end %>
+
+  <% if promo.start_at %>
+    <dt><%= t(:start_at, :scope => [:activerecord, :attributes, :promotion]) %></dt>
+    <dd><%= promo.start_at %></dd>
+  <% end %>
+
+  <% if promo.end_at %>
+    <dt><%= t(:end_at, :scope => [:activerecord, :attributes, :promotion]) %></dt>
+    <dd><%= promo.end_at %></dd>
+  <% end %>
+
+  <dt><%= t(:combine, :scope => [:activerecord, :attributes, :promotion]) %></dt>
+  <dd><%= promo.combine ? t(:yes) : t(:no) %></dd>
+</dl>
+
+<p class="description"><%= promo.description %></p>

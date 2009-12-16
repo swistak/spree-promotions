@@ -28,7 +28,6 @@ class PromotionsExtension < Spree::Extension
     ::Credit
     ::PromotionCredit
     ::ProductPromotion
-    ::Spree::ThemeSupport::Hook
 
     Order.class_eval do
       has_many :promotion_credits, :conditions => {:type => "PromotionCredit"}

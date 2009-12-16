@@ -1,0 +1,8 @@
+<div class="product-promotions">
+  <% promotions.each do |promo| %>
+    <%= link_to promo.name, promotion_path(promo) %>
+    <div class="promotion-details" style="display:none">
+      <% render :partial => '_details', :locals => {:promo => promo} %>
+    </div>
+  <% end %>
+</div>
