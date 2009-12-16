@@ -28,6 +28,7 @@ class PromotionsExtension < Spree::Extension
     ::Credit
     ::PromotionCredit
     ::ProductPromotion
+    ::Spree::ThemeSupport::Hook
 
     Order.class_eval do
       has_many :promotion_credits, :conditions => {:type => "PromotionCredit"}
@@ -40,12 +41,14 @@ class PromotionsExtension < Spree::Extension
 
     Admin::BaseController.class_eval do
       before_filter :add_promotions_tab
-    
+
       def add_promotions_tab
         # add_extension_admin_tab takes an array containing the same arguments expected
         # by the tab helper method:
         #   [ :extension_name, { :label => "Your Extension", :route => "/some/non/standard/route" } ]
-        add_extension_admin_tab [:promotions, :product_promotions, :user_promotions, :coupons]
+        if respond_to?(:add_extension_admin_tab)
+          add_extension_admin_tab [:promotions, :product_promotions, :user_promotions, :coupons]
+        end
       end
     end
 
@@ -58,6 +61,12 @@ class PromotionsExtension < Spree::Extension
 
     def Calculator.description
       I18n.t(self.name.split("::").map(&:underscore).join("."))
+    end
+
+    Product.class_eval do
+      def promotions
+        ProductPromotion.all.select{|promotion| promotion.include_product_id?(self.id)}
+      end
     end
 
     Rails.cache.silence!

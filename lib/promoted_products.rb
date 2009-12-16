@@ -25,4 +25,21 @@ module PromotedProducts
   def validate
     errors.add(:promoted_name, "Could not find record with name #{@promoted_name}") unless self.promoted_id
   end
+
+  def include_product?(product)
+    include_product_id?(product.id)
+  end
+
+  def include_product_id?(product_id)
+    case promoted
+    when Product
+      product_id == promoted.id
+    when ProductGroup
+      promoted.products.scoped(:product_id => product_id).count > 0
+    when Taxon
+      Product.in_taxon(promoted).scoped(:product_id => product_id).count > 0
+    else
+      promoted.products.map(&:id).include?(product_id)
+    end
+  end
 end
