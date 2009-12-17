@@ -10,7 +10,7 @@
   <%= t(:to)  + " " +  @promotion.end_at.to_s(:short_date) if @promotion.end_at %>
 </p>
 <p>
-  <%= Promotion.human_attribute_name(:zone) %>: <%= @promotion.zone.name %>
+  <%= Promotion.human_attribute_name(:zone) %>: <%= @promotion.zone ? @promotion.zone.name : t(:everywhere) %>
 </p>
 <p>
   <%= Promotion.human_attribute_name(:promoted) %>:
@@ -20,3 +20,16 @@
   <%= Promotion.human_attribute_name(:description) %>:<br />
   <%= @promotion.description %>
 </p>
+<div>
+  <%= Promotion.human_attribute_name(:calculator) %>:
+  <%= @promotion.calculator.description %>
+  <br />
+  <% if @promotion.calculator.respond_to? :preferences %>
+    <dl>
+      <% @promotion.calculator.preferences.each_pair do |k,v| %>
+        <dt><%= t(k) %></dt>
+        <dd><%= v %></dd>
+      <% end %>
+    </dl>
+  <% end %>
+</div>

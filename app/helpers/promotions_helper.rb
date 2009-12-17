@@ -1,7 +1,13 @@
 module PromotionsHelper
   def promotion_for(product)
     promotion = product.promotions.first
-    promotion ? '<span class="promotion">'+promotion.name+'</span>' : ''
+    promotion ? (
+      '<span class="promotion">'+
+        promotion.name+
+        '</span>'+
+        link_to(t(:promotion_details),
+        promotions_path(promotion)
+      )) : ''
   end
 
   def promotions_for(product)

@@ -3,6 +3,7 @@ en-US:
   activerecord:
     attributes:
       promotion:
+        type: Type of promotion
         promoted: Promoted
         combine: Combinable?
         name: Name
@@ -33,3 +34,15 @@ en-US:
   product promotions: Product promotions
   summary: Promotions summary
   count: Count
+  everywhere: Everywhere
+  calculators:
+    free_shipping: Free Shipping
+    cheapest_free: Chepest product for free
+    n_and_more_products: Discount when buying N and more products
+    no_charge: Offset specified charge type
+    nth_free: Nth product free(x+1 free)
+  charge_type: Type of charge
+  n_items: Number of items
+  amount: Discount amount
+  percent: Discount percent
+  no_time_limit: No time limit

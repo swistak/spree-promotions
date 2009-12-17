@@ -4,7 +4,7 @@ class Admin::ProductPromotionsController < Admin::BaseController
   helper 'admin/promotions'
 
   def collection
-    @search = ProductPromotion.active.search(params[:search])
+    @search = ProductPromotion.search(params[:search])
 
     @promotions = @collection = @search.paginate(
       :per_page => Spree::Config[:per_page],
@@ -33,12 +33,21 @@ class Admin::ProductPromotionsController < Admin::BaseController
     render :inline => "<%= auto_complete_result @items, 'name' %>"
   end
 
-  create.success.after do
-    logger.debug("okej (niby)")
+  create.response do |wants|
+    wants.html do
+      if @promotion.calculator.respond_to?(:preferences) && @promotion.calculator.preferences.length > 0
+        flash[:notice] = t(:set_preferences)
+        redirect_to(edit_object_url)
+      else
+        redirect_to(object_url)
+      end
+    end
   end
 
-  create.failure.after do
-    logger.debug(@object.errors.inspect)
+  update.response do |wants|
+    wants.html do
+      redirect_to(edit_object_url)
+    end
   end
 
   private

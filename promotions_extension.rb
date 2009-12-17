@@ -19,7 +19,9 @@ class PromotionsExtension < Spree::Extension
     FileUtils.cp Dir.glob(File.join(base, "public/javascripts/*.js")), File.join(RAILS_ROOT, "public/javascripts")
 
     if ProductPromotion.table_exists?
-      Calculator::FreeShipping.register(ProductPromotion)
+      [Calculator::CheapestFree, Calculator::FreeShipping, Calculator::NAndMoreProducts, Calculator::NoCharge, Calculator::NthFree].each do |calculator|
+        calculator.register(ProductPromotion)
+      end
       UserPromotion.register_calculator(Calculator::FlatPercentItemTotal)
       PromotionOrderObserver.instance
     end
@@ -59,7 +61,7 @@ class PromotionsExtension < Spree::Extension
     end
 
     def Calculator.description
-      I18n.t(self.name.split("::").map(&:underscore).join("."))
+      I18n.t(self.name.split("::").last.underscore, :scope => 'calculators')
     end
 
     Product.class_eval do

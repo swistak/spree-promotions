@@ -5,7 +5,7 @@ class Admin::UserPromotionsController < Admin::BaseController
   before_filter :load_data
 
   def collection
-    @search = UserPromotion.active.search(params[:search])
+    @search = UserPromotion.search(params[:search])
 
     @promotions = @collection = @search.paginate(
       :per_page => Spree::Config[:per_page],

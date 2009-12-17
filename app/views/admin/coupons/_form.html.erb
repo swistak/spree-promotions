@@ -17,8 +17,24 @@
   </tr>
 	<tr>
     <td><%=t("expiration")%>:</td>
-    <td><%= date_select :coupon, :expires_at, :prompt => true, :use_month_numbers => true %></td>
+    <td><%= f.unobtrusive_date_picker :expires_at %></td>
+  </tr>
+  <tr>
+    <td><%= Promotion.human_attribute_name("promoted_type") %>:</td>
+    <td><%= collection_select(:promotion, :promoted_type, @promoted_types, :name, :human_name, {}) %></td>
+  </tr>
+  <tr>
+    <td><%= Promotion.human_attribute_name("promoted_name") %>:</td>
+    <td>
+      <%= f.text_field :promoted_name %>
+      <%= f.error_message_on :promoted_name %>
+    </td>
   </tr>
 </table>
 
 <%= render "admin/shared/calculator_fields", :f => f %>
+
+<% content_for(:head) do %>
+  <%= javascript_include_tag('promotions.autocompleter', 'promotions')   %>
+  <%= stylesheet_link_tag('autocomplete') %>
+<% end %>

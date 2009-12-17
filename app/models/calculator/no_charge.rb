@@ -1,5 +1,5 @@
 class Calculator::NoCharge < Calculator
-  preference :charge_type, :string
+  preference :charge_type, :type_of_charge
 
   # Computes the credit adjustment for orders with no charge promotions
   #

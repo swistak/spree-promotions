@@ -1,0 +1,48 @@
+﻿---
+pl:
+  activerecord:
+    attributes:
+      promotion:
+        type: Rodzaj promocji
+        promoted: Promowane
+        combine: Łączone
+        name: Nazwa
+        start_at: Zacznik promocję od
+        end_at: Zakończ promocję
+        zone: Strefa
+        promoted_type: Typ
+        promoted_name: Nazwa
+        description: Opis
+    models:
+      promotion:
+        one: Promocja
+        other: Promocje
+      product_promotion:
+        one: Promocja na produkty
+        other: Promocje na produkty
+      group_promotion:
+        one: Promocja na grupy produktów
+        other: Promaocje na grupy produktów
+      first_purchase_promotion:
+        one: Promocja dla kupujących po raz pierwszy
+        other: Promocje dla kupujących po raz pierwszy
+  promotions: Promocje
+  new_promotion: Nowe promocje
+  new_product_promotion: Promocja nowego produktu
+  new_user_promotion: Promocja lda nowego użytkownika
+  user promotions: Promocje użytkownika
+  product promotions: Promocje produktów
+  summary: Podsumowanie promocji
+  count: Liczba
+  everywhere: Wszędzie
+  calculators:
+    free_shipping: Darmowa dostawa
+    cheapest_free: Najtańszy produkt za darmo
+    n_and_more_products: Upust przy kupnie N i więcej produktów
+    no_charge: Zniesienie typu opłaty
+    nth_free: Co Nty produkt gratis
+  charge_type: Typ opłaty
+  n_items: Ilość przedmiotów
+  amount: Kwota upustu
+  percent: Procent upustu
+  no_time_limit: Nie ograniczona czasowo
