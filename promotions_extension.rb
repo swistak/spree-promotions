@@ -70,6 +70,8 @@ class PromotionsExtension < Spree::Extension
       end
     end
 
+    [ProductsController, Spree::BaseController].each{|c| c.helper 'promotions'}
+      
     Rails.cache.silence!
 
     # make your helper avaliable in all views

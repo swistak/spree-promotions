@@ -2,6 +2,6 @@
 
 <% @promotions.each do |promo| %>
   <div class="promotion-details">
-    <%= render :partial => 'details', :locals => {:promo => promo} %>
+    <%= render :partial => '/promotions/details', :locals => {:promo => promo} %>
   </div>
 <% end %>

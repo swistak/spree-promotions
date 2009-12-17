@@ -35,9 +35,9 @@ module PromotedProducts
     when Product
       product_id == promoted.id
     when ProductGroup
-      promoted.products.scoped(:product_id => product_id).count > 0
+      promoted.products.scoped(:conditions => {:id => product_id}).count > 0
     when Taxon
-      Product.in_taxon(promoted).scoped(:product_id => product_id).count > 0
+      Product.in_taxon(promoted).scoped(:conditions => {:id => product_id}).count > 0
     else
       promoted.products.map(&:id).include?(product_id)
     end
