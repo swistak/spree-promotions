@@ -11,13 +11,15 @@
 
 <table class="index">
   <thead>
-    <th><%= t("code") %></th>
-    <th><%= t("description") %></th>
-    <th><%= t("combine") %></th>
-    <th><%= t("usage_limit") %></th>
-    <th><%= t("expiration") %></th>
-    <th><%= t("calculator") %></th>     
-    <th><%= t("action") %></th>
+    <tr>
+      <th><%= t("code") %></th>
+      <th><%= t("description") %></th>
+      <th><%= t("combine") %></th>
+      <th><%= t("usage_limit") %></th>
+      <th><%= t("expiration") %></th>
+      <th><%= t("calculator") %></th>
+      <th><%= t("action") %></th>
+    </tr>
   </thead>
   <tbody>
     <% @coupons.each do |coupon|%>
@@ -29,8 +31,8 @@
         <td width="70px"><%= coupon.expires_at.to_s(:short_date) if coupon.expires_at %></td>
         <td width="120px"><%= coupon.calculator.to_s %></td>
         <td>
-        	<%= link_to_edit coupon %> &nbsp;
-        	<%= link_to_delete coupon %>
+          <%= link_to_edit coupon %> &nbsp;
+          <%= link_to_delete coupon %>
         </td>
       </tr>
     <% end %>
