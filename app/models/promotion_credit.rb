@@ -17,11 +17,18 @@ class PromotionCredit < Credit
   def calculate_adjustment
     if adjustment_source && adjustment_source.respond_to?(:calculator)
       calc = adjustment_source.calculator
-      calc.compute(self) if calc
+      result = calc && calc.compute(self)
+      if promoted_products = adjustment_source.promoted_products
+        ceiling = order.
+          line_items(:join => :product).
+          select{|li| promoted_products.include?(li.product)}.
+          map(&:total).
+          sum
+      else
+        ceiling = order.item_total
+      end
+      result = ceiling if result.to_i.abs > ceiling.abs
+      result && -result.abs
     end
-  end
-
-  def before_save
-    self.amount = order.item_total if self.amount > order.item_total
   end
 end

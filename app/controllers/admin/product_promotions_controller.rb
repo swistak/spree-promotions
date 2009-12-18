@@ -19,9 +19,10 @@ class Admin::ProductPromotionsController < Admin::BaseController
     @promotion_types = ProductPromotion::PROMOTION_TYPES.map(&:constantize)
   end
 
-  def auto_complete_for_promotion_promoted_name
+  def auto_complete_for_promoted_name
+    name = (params['promotion'] || params['product_promotion'] || params['coupon'])['promoted_name']
     find_options = {
-      :conditions => [ "LOWER(name) LIKE ?", '%' + params['promotion']['promoted_name'].downcase + '%' ],
+      :conditions => [ "LOWER(name) LIKE ?", '%' + name.downcase + '%' ],
       :order => "name ASC",
       :limit => 10
     }

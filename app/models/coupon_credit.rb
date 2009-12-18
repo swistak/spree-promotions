@@ -22,10 +22,6 @@ class CouponCredit < Credit
       ceiling = order.item_total
     end
     amount = ceiling if amount > ceiling
-    amount
-  end
-
-  def before_save
-    self.amount = order.item_total if self.amount > order.item_total
+    amount && -amount.abs
   end
 end

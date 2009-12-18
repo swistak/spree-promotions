@@ -21,12 +21,12 @@
   </tr>
   <tr>
     <td><%= Promotion.human_attribute_name("promoted_type") %>:</td>
-    <td><%= collection_select(:promotion, :promoted_type, @promoted_types, :name, :human_name, {}) %></td>
+    <td><%= collection_select(:coupon, :promoted_type, @promoted_types, :name, :human_name, {}, {:class => 'promoted_type'}) %></td>
   </tr>
   <tr>
     <td><%= Promotion.human_attribute_name("promoted_name") %>:</td>
     <td>
-      <%= f.text_field :promoted_name %>
+      <%= f.text_field :promoted_name, :class => "promoted_name" %>
       <%= f.error_message_on :promoted_name %>
     </td>
   </tr>
@@ -35,6 +35,6 @@
 <%= render "admin/shared/calculator_fields", :f => f %>
 
 <% content_for(:head) do %>
-  <%= javascript_include_tag('promotions.autocompleter', 'promotions')   %>
+  <%= javascript_include_tag('promotions.autocompleter', 'promotions_admin')   %>
   <%= stylesheet_link_tag('autocomplete') %>
 <% end %>

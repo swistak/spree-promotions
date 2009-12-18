@@ -31,10 +31,6 @@ class PromotionsExtension < Spree::Extension
     ::PromotionCredit
     ::ProductPromotion
 
-    Order.class_eval do
-      has_many :promotion_credits, :conditions => {:type => "PromotionCredit"}
-    end
-
     # Add your extension tab to the admin.
     # Requires that you have defined an admin controller:
     # app/controllers/admin/yourextension_controller
@@ -57,16 +53,6 @@ class PromotionsExtension < Spree::Extension
       before_filter :promotions_submenu
       def promotions_submenu
         render_to_string :partial => 'admin/shared/promotions_sub_menu'
-      end
-    end
-
-    def Calculator.description
-      I18n.t(self.name.split("::").last.underscore, :scope => 'calculators')
-    end
-
-    Product.class_eval do
-      def promotions
-        ProductPromotion.all.select{|promotion| promotion.include_product_id?(self.id)}
       end
     end
 
