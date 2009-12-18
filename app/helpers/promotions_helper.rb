@@ -4,14 +4,22 @@ module PromotionsHelper
     promotion ? (
       '<span class="promotion">'+
         promotion.name+
-        '</span>'+
+        '</span> '+
         link_to(t(:promotion_details),
-        promotions_path(promotion)
+        promotion_path(promotion)
       )) : ''
   end
 
   def promotions_for(product)
-    render :partial => 'promotions/for_product', :locals => {:promotions => product.promotions}
+    if (promotions = product.promotions) && promotions.first
+      content_tag('h3', t(:promotions))+
+        content_tag('ul', product.promotions.map{ |promotion|
+          content_tag('li', link_to(promotion.name, promotion_path(:id => promotion.id), :class => "promotion"))
+        }.join("\n")
+      )
+    else
+      ""
+    end
   end
 
   def link_to_promoted(promoted)
