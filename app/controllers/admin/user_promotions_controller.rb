@@ -19,6 +19,10 @@ class Admin::UserPromotionsController < Admin::BaseController
   end
 
   private
+  def object
+    @promotion ||= super
+  end
+
   before_filter :promotions_submenu
   def promotions_submenu
     render_to_string :partial => 'admin/shared/promotions_sub_menu'

@@ -10,6 +10,20 @@
   <%= t(:to)  + " " +  @promotion.end_at.to_s(:short_date) if @promotion.end_at %>
 </p>
 <p>
-  <%= Promotion.human_attribute_name(:promoted) %>:<br />
-  <%= @promotion.users.count+" "+t(:users) %>
+  <%= Promotion.human_attribute_name(:eligible) %>:<br />
+  <%= "#{@promotion.users.count} #{t(:users)}" %>
 </p>
+
+<div>
+  <%= Promotion.human_attribute_name(:calculator) %>:
+  <%= @promotion.calculator.description %>
+  <br />
+  <% if @promotion.calculator.respond_to? :preferences %>
+    <dl>
+      <% @promotion.calculator.preferences.each_pair do |k,v| %>
+        <dt><%= t(k) %></dt>
+        <dd><%= v %></dd>
+      <% end %>
+    </dl>
+  <% end %>
+</div>

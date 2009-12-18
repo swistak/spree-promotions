@@ -3,10 +3,10 @@ class PromotionCredit < Credit
   def self.count_used(user_id, adjustment_source_id)
     count(
       :joins => :order,
-      :conditions => {
-        'orders.user_id' => user_id,
-        :adjustment_source_id => adjustment_source_id
-      })
+      :conditions => [
+        "orders.completed_at IS NOT NULL AND orders.user_id = ? AND #{table_name}.adjustment_source_id = ?",
+        user_id, adjustment_source_id
+      ])
   end
 
   def applicable?

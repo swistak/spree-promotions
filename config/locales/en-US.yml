@@ -41,6 +41,7 @@ en-US:
     n_and_more_products: Discount when buying N and more products
     no_charge: Offset specified charge type
     nth_free: Nth product free(x+1 free)
+    simple_discount: Discount without special conditions
   charge_type: Type of charge
   n_items: Number of items
   amount: Discount amount

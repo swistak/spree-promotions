@@ -41,6 +41,7 @@ pl:
     n_and_more_products: Upust przy kupnie N i więcej produktów
     no_charge: Zniesienie typu opłaty
     nth_free: Co Nty produkt gratis
+    simple_discount: Zniżka bez specjalnych warunków
   charge_type: Typ opłaty
   n_items: Ilość przedmiotów
   amount: Kwota upustu

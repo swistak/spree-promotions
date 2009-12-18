@@ -9,7 +9,7 @@
   <% if @object.new_record? %>
     <tr>
       <td><%= Promotion.human_attribute_name("type") %>:</td>
-      <td><%= collection_select(:promotion, :type, @promotion_types, :name, :human_name, {}) %></td>
+      <td><%= f.collection_select(:type, @promotion_types, :name, :human_name, {}) %></td>
     </tr>
   <% end %>
   <tr>
@@ -26,7 +26,7 @@
   </tr>
   <tr>
     <td><%= Promotion.human_attribute_name("promoted_type") %>:</td>
-    <td><%= collection_select(:promotion, :promoted_type, @promoted_types, :name, :human_name, {}, {:class => 'promoted_type'}) %></td>
+    <td><%= f.collection_select(:promoted_type, @promoted_types, :name, :human_name, {}, {:class => 'promoted_type'}) %></td>
   </tr>
   <tr>
     <td><%= Promotion.human_attribute_name("promoted_name") %>:</td>

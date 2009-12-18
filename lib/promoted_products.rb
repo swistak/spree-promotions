@@ -23,7 +23,7 @@ module PromotedProducts
   end
 
   def validate
-    errors.add(:promoted_name, "Could not find record with name #{@promoted_name}") unless self.promoted_id
+    errors.add(:promoted_name, "Could not find #{self.promoted_type} with name #{@promoted_name}") unless self.promoted_id
   end
 
   def include_product?(product)

@@ -21,7 +21,7 @@
   </tr>
   <tr>
     <td><%= Promotion.human_attribute_name("promoted_type") %>:</td>
-    <td><%= collection_select(:coupon, :promoted_type, @promoted_types, :name, :human_name, {}, {:class => 'promoted_type'}) %></td>
+    <td><%= f.collection_select(:promoted_type, @promoted_types, :name, :human_name, {}, {:class => 'promoted_type'}) %></td>
   </tr>
   <tr>
     <td><%= Promotion.human_attribute_name("promoted_name") %>:</td>
