@@ -1,4 +1,3 @@
-﻿---
 pl:
   activerecord:
     attributes:
@@ -27,6 +26,7 @@ pl:
         one: Promocja dla kupujących po raz pierwszy
         other: Promocje dla kupujących po raz pierwszy
   promotions: Promocje
+  Promotions: Promocje
   new_promotion: Nowe promocje
   new_product_promotion: Promocja nowego produktu
   new_user_promotion: Promocja lda nowego użytkownika
