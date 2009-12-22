@@ -43,9 +43,7 @@ class PromotionsExtension < Spree::Extension
         # add_extension_admin_tab takes an array containing the same arguments expected
         # by the tab helper method:
         #   [ :extension_name, { :label => "Your Extension", :route => "/some/non/standard/route" } ]
-        if respond_to?(:add_extension_admin_tab)
-          add_extension_admin_tab [:promotions, :product_promotions, :user_promotions, :coupons]
-        end
+        add_extension_admin_tab([:promotions, :product_promotions, :user_promotions, :coupons]) rescue NameError
       end
     end
 
